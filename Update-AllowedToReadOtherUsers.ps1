@@ -9,7 +9,7 @@
 .LINK
     https://learn.microsoft.com/en-us/powershell/module/microsoft.graph.identity.signins/update-mgpolicyauthorizationpolicy
 .EXAMPLE
-   .\Update-AllowedToReadOtherUsers.ps1
+   .\Update-AllowedToReadOtherUsers.ps1 -AllowedToReadOtherUsers:$true
 #>
 
 param(
