@@ -25,7 +25,7 @@ function Get-IntuneManagedDevice {
 .EXAMPLE
 	Get-IntuneManagedDevice -ComputerName "COMPUTER01","PC2"
 .EXAMPLE
-    Get-IntuneManagedDevice -IntuneId 
+    Get-IntuneManagedDevice -IntuneId
 .EXAMPLE
     Returns all devices with the predefedined properties
     Get-IntuneManagedDevice
@@ -42,10 +42,11 @@ function Get-IntuneManagedDevice {
     begin {
         #Connecting to Microsoft Graph API v1.0 (Consent will be required if the app doesn't have it)
         Connect-MgGraph -NoWelcome -Scopes "DeviceManagementManagedDevices.Read.All" -ContextScope Process
-        $devices = @()
+
     }
 
     process {
+        $devices = @()
         #Retrieve all devices from Intune
         if ($All) {
             return (Invoke-MgGraphRequest -Method GET "https://graph.microsoft.com/v1.0/deviceManagement/manageddevices").value
@@ -54,18 +55,18 @@ function Get-IntuneManagedDevice {
         if ($PSBoundParameters.ContainsKey('ComputerName')) {
             Write-Verbose "Looking for computers with the name(s) $ComputerName"
             $devices += $ComputerName | ForEach-Object {
-                Invoke-MgGraphRequest -Method GET "https://graph.microsoft.com/v1.0/deviceManagement/manageddevices?`$select=devicename,model,serialNumber,osVersion,lastSyncDateTime,deviceEnrollmentType,id,userdisplayname&`$filter=devicename eq '$_'" -SkipHttpErrorCheck
+                Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/deviceManagement/manageddevices?`$select=devicename,model,serialNumber,osVersion,lastSyncDateTime,deviceEnrollmentType,id,userdisplayname&`$filter=devicename eq '$_'" -SkipHttpErrorCheck
             }
         }
         #Search based on Intune Id (not be confused with entra ID)
         elseif ($PSBoundParameters.ContainsKey('IntuneId')) {
             Write-Verbose "Looking for computer(s) with the Intune ID $IntuneId"
             #By using the id this way in the graph request, the reponse data response format is way different than the usual ones (probably should use format imo)
-            $devices += $IntuneId | Invoke-MgGraphRequest -Method GET "https://graph.microsoft.com/v1.0/deviceManagement/manageddevices/$_`?`$select=devicename,model,serialNumber,osVersion,lastSyncDateTime,deviceEnrollmentType,id,userdisplayname" -SkipHttpErrorCheck
+            $devices += $IntuneId | Invoke-MgGraphRequest -Method GET -Uri "https://graph.microsoft.com/v1.0/deviceManagement/manageddevices/$_`?`$select=devicename,model,serialNumber,osVersion,lastSyncDateTime,deviceEnrollmentType,id,userdisplayname" -SkipHttpErrorCheck
             return Get-IntuneManagedDeviceEthernetMacAddress -Devices $devices
         }
         else {
-            $devices = Invoke-MgGraphRequest -Method GET 'https://graph.microsoft.com/v1.0/deviceManagement/manageddevices?$select=devicename,model,serialNumber,osVersion,lastSyncDateTime,deviceEnrollmentType,id,userdisplayname' -SkipHttpErrorCheck
+            $devices = Invoke-MgGraphRequest -Method GET -Uri 'https://graph.microsoft.com/v1.0/deviceManagement/manageddevices?$select=devicename,model,serialNumber,osVersion,lastSyncDateTime,deviceEnrollmentType,id,userdisplayname' -SkipHttpErrorCheck
         }
         #Comment this if you want to return more than just Windows devices
         $devices = ($devices.value | Where-Object { $_.deviceEnrollmentType -match "windowsCoManagement|windowsAzureADJoinUsingDeviceAuth|windowsAzureADJoin" })
