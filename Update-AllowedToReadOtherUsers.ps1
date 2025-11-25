@@ -13,7 +13,8 @@
 #>
 
 param(
-    [Parameter(Mandatory=$true)][bool]$AllowedToReadOtherUsers
+    [Parameter(Mandatory = $true)]
+    [bool]$AllowedToReadOtherUsers
 )
 #Current Graph version 2.28.0
 #Permissions needed for updating the policies only
