@@ -16,4 +16,5 @@ This setting was set to `false` for security concerns but we reverted this back 
 
 `Get-IntuneManagedDeviceConfigurationProfiles`: This script is for retrieving unique configuration profiles applied to a device from Intune. Working in an environmment where you have multiple people logging and out on a device it makes reading the configuration profiles reading more easier to diagnostic.
 
+`Get-RemoteControl:` Allows to control/view user's session on a remote computer can be used for console/RDP.
 
