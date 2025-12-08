@@ -5,12 +5,6 @@ function Get-RemoteControl {
     .DESCRIPTION
         This was made to make it easier and faster to remote control over a user session on a remote computer.
         Using the shadow volumes by extracting the session ID from the remote session (meaning you need to be able to do remote commands on the remote computer)
-        For this command to work you must allow RDP over the remote computer, the firewall rules "RemoteDesktop-Shadow-In-TCP" and "FPS-SMB-In-TCP" must be enabled.
-        Settings configuration on the remote commputer:
-        Windows Components > Remote Desktop Services > Remote Desktop Session Host > Connections
-            Options: (Device) = Full Control without user's permission
-            Allow users to connect remotely by using Remote Desktop Services = Enabled
-            Set rules for remote control of Remote Desktop Services user sessions = Enabled
     .NOTES
         The consent prompt should be a default behavior.
         If UAC is set up to use the secure desktop you won't be able to elevate applications. In that case change UAC behavior to elevate without secure desktop or use RemoteHelp Intune feature is available.
