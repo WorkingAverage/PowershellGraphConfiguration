@@ -1,7 +1,7 @@
 function Get-MailboxSMTPForwardAddress {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory = $true)][String]$User
+        [Parameter(Mandatory = $true)][String[]]$User
     )
 
     begin {
@@ -18,10 +18,9 @@ function Get-MailboxSMTPForwardAddress {
         foreach ($mailboxIdentity in $user) {
             $userMailbox = Get-Mailbox -Identity $User
             if ($null -eq $userMailbox) {
-                Write-Error "$User mailbox doesn't exist"
-                return 1
+                Write-Information "$User mailbox doesn't exist"
             }
-            Write-Host "Current user smtp forward: " -NoNewline
+            Write-Host "$mailboxIdentity -> " -NoNewline
             Write-Host $(if ($null -eq $userMailbox.ForwardingSmtpAddress) {
                     "None"
                 }
@@ -29,12 +28,11 @@ function Get-MailboxSMTPForwardAddress {
                     $userMailbox.ForwardingSmtpAddress
                 }
             ) -ForegroundColor Yellow
-
         }
     }
 
     end {
-        Write-Verbose "Disconnectiong from ExchangeOnline"
-        Disconnect-ExchangeOnline -Confirm:$false | Out-Null
+        Write-Information "Disconnectiong from ExchangeOnline"
+        Disconnect-ExchangeOnline
     }
 }
