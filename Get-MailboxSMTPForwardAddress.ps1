@@ -16,9 +16,9 @@ function Get-MailboxSMTPForwardAddress {
 
     process {
         foreach ($mailboxIdentity in $user) {
-            $userMailbox = Get-Mailbox -Identity $User
+            $userMailbox = Get-Mailbox -Identity $mailboxIdentity
             if ($null -eq $userMailbox) {
-                Write-Information "$User mailbox doesn't exist"
+                Write-Information "$mailboxIdentity mailbox doesn't exist"
             }
             Write-Host "$mailboxIdentity -> " -NoNewline
             Write-Host $(if ($null -eq $userMailbox.ForwardingSmtpAddress) {
@@ -33,6 +33,6 @@ function Get-MailboxSMTPForwardAddress {
 
     end {
         Write-Information "Disconnectiong from ExchangeOnline"
-        Disconnect-ExchangeOnline
+        Disconnect-ExchangeOnline -WhatIf:$WhatIfPreference
     }
 }
