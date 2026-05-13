@@ -1,4 +1,5 @@
 function Get-UserSignIns {
+    [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter()]$UserDisplayName,
         [Parameter()]$Identity,

@@ -26,7 +26,7 @@ This script is for retrieving unique configuration profiles applied to a device 
 
 Get-RemoteControl
 ----------
-Allows to control/view user's session on a remote computer can be used for console/RDP.  
+Allows to control/view user's session on a remote computer can be used for console/RDP.
 For this command to work you must allow RDP over the remote computer, the firewall rules "RemoteDesktop-Shadow-In-TCP" and "FPS-SMB-In-TCP" must be enabled.
 Settings configuration on the remote computer:
 - Windows Components > Remote Desktop Services > Remote Desktop Session Host > Connections
@@ -43,13 +43,17 @@ Remove-MailboxSMTPForwardAddress
 ----------
 To be used with the previous scripts to remove mailbox forward from mailboxes.
 
->Those scripts are quite simple and should be tested thoroughly so that no mistakes will be made. I do intend to improve as much to avoid errors but as of right now it's not the case.  
+>Those scripts are quite simple and should be tested thoroughly so that no mistakes will be made. I do intend to improve as much to avoid errors but as of right now it's not the case.
 *The Set-MailboxSMTPForwardAddress doesn't exist but it could be easily made*
 
 Get-DeviceLastSyncTime
 ----------
-Returns the last sync datetime from one or more Intune devices. The time will be converted to local time for easier readability.  
+Returns the last sync datetime from one or more Intune devices. The time will be converted to local time for easier readability.
 
 Get-PrinterCountMeters
 ----------
 Retrieve total counters on printers using SNMP
+
+Get-IntuneManagedDevicePlatformScripts
+----------
+Allow to retrieve all the scripts from intune or only for a specific device using the display name

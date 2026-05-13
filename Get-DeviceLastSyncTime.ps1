@@ -3,8 +3,8 @@ function Get-DeviceLastSyncTime {
     .SYNOPSIS
         Returns the last sync datetime value from Intune devices. Time will be converted to local machine time.
     #>
-    
-    [CmdletBinding()]
+
+    [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory = $true)][string[]]$ComputerName
     )
@@ -21,8 +21,8 @@ function Get-DeviceLastSyncTime {
 
     process {
         $devices = [pscustomobject]@()
-        $devices = ($ComputerName | ForEach-Object { Invoke-MgGraphRequest -Method GET "https://graph.microsoft.com/v1.0/deviceManagement/manageddevices?`$select=devicename,lastSyncDateTime&`$filter=(contains(devicename,`'$_`'))" -SkipHttpErrorCheck }).value
-        $devices = $devices | ForEach-Object { [pscustomobject]$_ }
+        $devices = $ComputerName | ForEach-Object { Invoke-MgGraphRequest -Method GET "https://graph.microsoft.com/v1.0/deviceManagement/manageddevices?`$select=devicename,lastSyncDateTime&`$filter=(contains(devicename,`'$_`'))" -SkipHttpErrorCheck }
+        $devices = $devices.value | ForEach-Object { [pscustomobject]$_ }
         $devices | Where-Object { $_.lastsyncdatetime = $_.lastsyncdatetime.tolocaltime() }
         return $devices
     }
