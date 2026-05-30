@@ -1,3 +1,4 @@
+B.T
 # Powershell Graph Configuration and Management (Azure AD / Entra-Joined / Intune)
 I created this repository has a toolbox for my fellow sysadmins, where microsoft documentation on Microsoft API is convulated I hope this makes your life easier.
 
